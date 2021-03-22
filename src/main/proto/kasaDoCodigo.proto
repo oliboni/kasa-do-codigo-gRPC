@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "br.com.zup";
+option java_outer_classname = "KasaDoCodigo";
+option objc_class_prefix = "HLW";
+
+package br.com.zup;
+
+import "google/protobuf/timestamp.proto";
+
+service BookService{
+  rpc register(NewBookRequest) returns (NewBookResponse){}
+  rpc list(ListBooksRequest) returns (ListBooksResponse){}
+  rpc detail(BookDetailRequest) returns (BookDetailResponse){}
+}
+
+message BookDetailRequest{
+  string bookId = 1;
+}
+
+message BookDetailResponse{
+  message Author{
+    string nome       = 1;
+    string email      = 2;
+    string descricao  = 3;
+  }
+  message Category{
+    string name = 1;
+  }
+
+  string title       = 1;
+  string abstract    = 2;
+  string summary     = 3;
+  double price       = 4;
+  int32  pagesNumber = 5;
+  string isbn        = 6;
+  google.protobuf.Timestamp InicialDates = 7;
+  Author author     = 8;
+  Category category  = 9;
+}
+
+message ListBooksRequest{
+  string authorId = 1;
+}
+
+message ListBooksResponse{
+  message Books{
+    string bookId = 1;
+    string title  = 2;
+  }
+
+  repeated Books books = 1;
+}
+
+message NewBookRequest{
+  string title       = 1;
+  string abstract    = 2;
+  string summary     = 3;
+  double price       = 4;
+  int32  pagesNumber = 5;
+  string isbn        = 6;
+  google.protobuf.Timestamp inicialDates = 7;
+  string categoryId  = 8;
+  string authorId    = 9;
+}
+
+message NewBookResponse{
+  string bookId      = 1;
+  string title       = 2;
+  string abstract    = 3;
+  string summary     = 4;
+  double price       = 5;
+  int32  pagesNumber = 6;
+  string isbn        = 7;
+  google.protobuf.Timestamp InicialDates = 8;
+  NewCategoryResponse category  = 9;
+  NewAutorResponse    author    = 10;
+}
+
+service CategoryService{
+  rpc register(NewCategoryRequest) returns (NewCategoryResponse){}
+}
+
+message NewCategoryRequest{
+  string name = 1;
+}
+
+message NewCategoryResponse{
+  string id   = 1;
+  string name = 2;
+}
+
+service AutorService {
+  rpc  cadastro(NewAutorRequest) returns (NewAutorResponse) {}
+}
+
+message NewAutorRequest {
+  string nome       = 1;
+  string email      = 2;
+  string descricao  = 3;
+}
+
+message NewAutorResponse {
+  string id         = 1;
+  string nome       = 2;
+  string email      = 3;
+  string descricao  = 4;
+  google.protobuf.Timestamp criadoEm = 5;
+}
